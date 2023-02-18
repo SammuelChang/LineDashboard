@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-white dark:bg-gray-700 h-screen;
+  }
+  body {
+    @apply bg-white dark:bg-gray-700 min-h-screen;
+  }
+
+  ::selection {
+    @apply bg-message-500
+  }
+}
+
+.recharts-responsive-container {
+  /* min-height: 320px !important;
+  height: 320px !important; */
+}
+
+/* Recharts列印跑板問題 */
+/* https://github.com/recharts/recharts/issues/1114 */
+@media print {
+  .recharts-wrapper, .recharts-surface, .recharts-legend-wrapper {
+      width: 100%!important;
+  }
+  .recharts-legend-item > svg{
+      width: auto!important;
+      display: inline-block!important;
+      right:inherit!important; 
+  }
+}
