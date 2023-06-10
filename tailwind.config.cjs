@@ -6,6 +6,23 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/react-tailwindcss-datepicker/dist/index.esm.js",
   ],
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+        "primary": "#91B5A9",
+        "secondary": "#D926AA",
+        "accent": "#1FB2A5",
+        "neutral": "#191D24",
+        "base-100": "#2A303C",
+        "info": "#3ABFF8",
+        "success": "#36D399",
+        "warning": "#FBBD23",
+        "error": "#F87272",
+        },
+      },
+    ],
+  },
   theme: {
     mode: 'jit',
     purge: [
@@ -17,6 +34,22 @@ module.exports = {
         'print': {'raw': 'print'},
      },
       colors: {
+        text: "var(--color-text)",
+        textSecond: "var(--color-text-2)",
+        subtext: "var(--color-subtext)",
+        spot: "var(--color-spot)",
+        background: "var(--color-background)",
+        subBackground: "var(--color-subBackground)",
+        border: "var(--color-border)",
+        hover: "var(--color-hover)",
+        messageDefault: "var(--color-message)",
+        callDefault: "var(--color-call)",
+        stickerDefault: "var(--color-sticker)",
+        emojiDefault: "var(--color-emoji)",
+        messageSecond: "var(--color-message-2)",
+        callSecond: "var(--color-call-2)",
+        stickerSecond: "var(--color-sticker-2)",
+        emojiSecond: "var(--color-emoji-2)",
         'dark': {
           '50': '#f4f4f4', 
           '100': '#eaeaea', 

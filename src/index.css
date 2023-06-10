@@ -9,9 +9,45 @@
   body {
     @apply bg-white dark:bg-gray-700 min-h-screen;
   }
-
   ::selection {
-    @apply bg-message-500
+    background: #91B5A9
+  }
+  :root {
+    --color-text: #000;
+    --color-text-2: #6F6F6F;
+    --color-subtext: #aaaaaa;
+    --color-spot: #F4F4F4;
+    --color-background: #fff;
+    --color-subBackground: #F4F4F4;
+    --color-background: #fff;
+    --color-border: #9ca3af;
+    --color-hover: #F2F2F2;
+    --color-message: #91B5A9;
+    --color-call: #DB8381;
+    --color-sticker: #E9BAAA;
+    --color-emoji: #EECA80;
+    --color-message-2: #91B5A999;
+    --color-call-2: #DB838199;
+    --color-sticker-2: #E9BAAA99;
+    --color-emoji-2: #EECA8099;
+  }
+  :root[class="dark"] {
+    --color-text: #fff;
+    --color-text-2: #f2f2f2;
+    --color-subtext: #aaaaaa;
+    --color-spot: #202020;
+    --color-background: #363636;
+    --color-subBackground: #202020;
+    --color-border: #9ca3af;
+    --color-hover: #6b6b6b;
+    --color-message: #6d887f;
+    --color-call: #a46261;
+    --color-sticker: #af8c80;
+    --color-emoji: #b39860;
+    --color-message-2: #91B5A999;
+    --color-call-2: #DB838199;
+    --color-sticker-2: #E9BAAA99;
+    --color-emoji-2: #EECA8099;
   }
 }
 
@@ -31,4 +67,16 @@
       display: inline-block!important;
       right:inherit!important; 
   }
+}
+
+.reveal{
+  position: relative;
+  transform: translateY(150px);
+  opacity: 0;
+  transition: 1s all ease;
+}
+
+.reveal.active{
+  transform: translateY(0);
+  opacity: 1;
 }

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
 import demo from "../../utils/demo.txt";
-import ChartContainer from "../../components/ChartContainer";
-import Line from "../../components/Line";
+import ChartContainer from "../../components/Recharts/ChartContainer";
+import Line from "../../components/Recharts/Line";
+import Pie from "../../components/Recharts/Pie";
 import Legend from "../../components/Legend";
 import Record from "../../components/Record";
 import Banner from "../../components/Banner";
+import { GrRefresh } from "react-icons/gr";
 
 import { parseFile } from "../../redux/slices/content";
 import {
@@ -25,15 +27,19 @@ import { transformStickerEmojiChart } from "../../redux/slices/chart/stickerEmoj
 import { transformChatPowerChart } from "../../redux/slices/chart/chatPowerChart";
 import { transformMediaPowerChart } from "../../redux/slices/chart/mediaPowerChart";
 import { transformChatDensityChart } from "../../redux/slices/chart/chatDensityLineChart";
+import { transformContactPeriodPieChart } from "../../redux/slices/chart/contactPeriodPieChart";
 import { transformSummaryBlocks } from "../../redux/slices/chart/summaryBlocks";
 import { transformRecordBlocks } from "../../redux/slices/chart/recordBlocks";
 
 import { dateRangeSetter } from "../../utils";
 import { useAppSelector, useAppDispatch } from "../../hook";
+import { filterMessages, setMessages } from "../../redux/slices/stats/messages";
+import { Link } from "react-router-dom";
 
 function Analysis() {
   const file = useAppSelector((state) => state.file);
   const content = useAppSelector((state) => state.content);
+  const messages = useAppSelector((state) => state.messages);
   const userDailyStats = useAppSelector((state) => state.userDailyStats);
   const dailyStats = useAppSelector((state) => state.dailyStats);
   const summaryStats = useAppSelector((state) => state.summaryStats);
@@ -46,6 +52,9 @@ function Analysis() {
   const chatPowerChart = useAppSelector((state) => state.chatPowerChart);
   const mediaPowerChart = useAppSelector((state) => state.mediaPowerChart);
   const chatDensityChart = useAppSelector((state) => state.chatDensityChart);
+  const contactPeriodPieChart = useAppSelector(
+    (state) => state.contactPeriodPieChart
+  );
   const summaryBlocks = useAppSelector((state) => state.summaryBlocks);
   const recordBlocks = useAppSelector((state) => state.recordBlocks);
 
@@ -57,6 +66,7 @@ function Analysis() {
   const [dateRange, setDateRange] = useState<any>({});
 
   useEffect(() => {
+    if (Object.keys(file).length !== 0) return;
     if (Object.keys(demo).length === 0) return;
     async function loadFile() {
       const response = await fetch(demo);
@@ -75,6 +85,7 @@ function Analysis() {
   useEffect(() => {
     if (Object.keys(content).length === 0) return;
 
+    dispatch(setMessages({ content }));
     dispatch(analyzeUserDailyStats({ content }));
     dispatch(analyzeDailyStats({ content }));
 
@@ -103,12 +114,14 @@ function Analysis() {
     if (Object.keys(content).length === 0) return;
 
     dispatch(transformSummaryBlocks({ summaryStats }));
+    dispatch(transformContactPeriodPieChart({ summaryStats }));
     dispatch(transformRecordBlocks({ maxStats }));
   }, [summaryStats, maxStats]);
 
   useEffect(() => {
     if (Object.keys(content).length === 0) return;
 
+    dispatch(filterMessages({ content, dateRange }));
     dispatch(filterUserDailyStats({ content, isFullChat, dateRange }));
     dispatch(filterDailyStats({ content, isFullChat, dateRange }));
   }, [dateRange]);
@@ -143,14 +156,25 @@ function Analysis() {
 
   return (
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
-      <Banner
-        title={`
+      <div>
+        <Banner
+          title={`
           ${content.title}${Object.keys(file).length === 0 ? "（範例）" : ""}
         `}
-        type="strong"
-      />
+          type="strong"
+        >
+          <p className="absolute right-0 mr-5">
+            <Link to="/process/upload">
+              <GrRefresh
+                className="[&>path]:stroke-text hover:scale-110 duration-300"
+                size="1.5rem"
+              />
+            </Link>
+          </p>
+        </Banner>
+      </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
-        <div className="p-2 dark:text-white">
+        <div className="p-2 dark:text-text">
           <strong>時間範圍：</strong>
           <span className="py-2">
             {dateRangeLists.map((item: any) => (
@@ -158,9 +182,9 @@ function Analysis() {
                 key={item.key}
                 className={`${
                   item["checked"]
-                    ? "bg-gray-800 dark:bg-dark-400 text-white font-bold"
-                    : "bg-gray-300 dark:bg-dark-900 text-white font-bold"
-                } w-fit h-fit bg-gray-300 dark:bg-gray-600 px-4 mx-1 md:mx-2 rounded-lg`}
+                    ? "bg-gray-800 dark:bg-dark-400"
+                    : "bg-gray-300 dark:bg-dark-900"
+                } w-fit h-fit px-4 mx-1 md:mx-2 rounded-lg text-white hover:shadow duration-300`}
                 onClick={() => {
                   dateRangeHandler(item.key);
                 }}
@@ -235,6 +259,11 @@ function Analysis() {
         {chatDensityChart && (
           <ChartContainer title="對話密度" loading={loading}>
             <Line data={chatDensityChart} />
+          </ChartContainer>
+        )}
+        {contactPeriodPieChart && (
+          <ChartContainer title="訊息時段" loading={loading} center={true}>
+            <Pie data={contactPeriodPieChart} />
           </ChartContainer>
         )}
       </section>

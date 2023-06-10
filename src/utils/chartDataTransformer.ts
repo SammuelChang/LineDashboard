@@ -271,7 +271,7 @@ export function messageAndCallLineTransformer(
       callDuration: item.callDuration,
     };
 
-    Object.entries(item).forEach(([key, value]: any[]) => {
+    Object.entries(item.user).forEach(([key, value]: any[]) => {
       result[`user${userLists.indexOf(key)}_messageCount`] = value.messageCount;
     });
 
@@ -322,39 +322,27 @@ export function stickerAndEmojiLineTransformer(
       emojiCount: item.emojiCount,
     };
 
-    Object.entries(item).forEach(([key, value]: any[]) => {
-      result[`user${userLists.indexOf(key)}_stickerCount`] = value.stickerCount;
-      result[`user${userLists.indexOf(key)}_emojiCount`] = value.emojiCount;
+    Object.entries(item.user).forEach(([key, value]: any[]) => {
+      result[`user${userLists.indexOf(key)}_stickerEmojiCount`] =
+        value.stickerCount + value.emojiCount;
     });
 
     return result;
   });
   const commonStyle = { strokeWidth: globalStrokeStatus === "lg" ? 5 : 3 };
-  const stickerStrokeLists = ["#c7942c", "#EECA80", ...extendStrokeLists];
-  const stickerStyle = userLists?.map((user, index) => {
-    const key = `user${index}_stickerCount`;
+  const stickerEmojiStrokeLists = ["#c7942c", "#EECA80", ...extendStrokeLists];
+  const stickerEmojiStyle = userLists?.map((user, index) => {
+    const key = `user${index}_stickerEmojiCount`;
     return {
-      name: `${user}的貼圖數`,
+      name: `${user}的貼圖/表情數`,
       dataKey: key,
       hide: !sum(data, key),
-      stroke: stickerStrokeLists[index],
+      stroke: stickerEmojiStrokeLists[index],
       yaxisId: "left",
       ...commonStyle,
     };
   });
-  const emojiStrokeLists = ["#eb805b", "#E9BAAA", ...extendStrokeLists2];
-  const emojiStyle = userLists?.map((user, index) => {
-    const key = `user${index}_emojiCount`;
-    return {
-      name: `${user}的表情數`,
-      dataKey: key,
-      hide: !sum(data, key),
-      stroke: emojiStrokeLists[index],
-      yaxisId: "left",
-      ...commonStyle,
-    };
-  });
-  const style = [...stickerStyle, ...emojiStyle];
+  const style = [...stickerEmojiStyle];
 
   return { hasData, data, style, ...axisSetting, legend: true };
 }
@@ -362,7 +350,14 @@ export function stickerAndEmojiLineTransformer(
 /**
  * 圖表資料製作：主要聯絡時段圓餅圖
  */
-export function contactPeriodPieTransformer(data: any) {}
+export function contactPeriodPieTransformer(summaryStats: ISummaryStats) {
+  const periodCountArr = Object.entries(summaryStats.periodCount);
+  const periodCountRes = periodCountArr.map(([key, value]) => ({
+    name: key,
+    value,
+  }));
+  return periodCountRes;
+}
 
 /**
  * 圖表資料製作：常見詞彙文字雲
@@ -388,7 +383,7 @@ export function chatPowerLineTransformer(
       [TARGET]: item[TARGET],
     };
 
-    Object.entries(item).forEach(([key, value]: any[]) => {
+    Object.entries(item.user).forEach(([key, value]: any[]) => {
       result[`user${userLists.indexOf(key)}_${TARGET}`] = value[TARGET];
     });
 
@@ -429,7 +424,7 @@ export function mediaPowerLineTransformer(
       [TARGET]: item[TARGET],
     };
 
-    Object.entries(item).forEach(([key, value]: any[]) => {
+    Object.entries(item.user).forEach(([key, value]: any[]) => {
       result[`user${userLists.indexOf(key)}_${TARGET}`] = value[TARGET];
     });
 
@@ -470,7 +465,7 @@ export function chatDensityLineTransformer(
       setCount: item.setCount,
       collectionCount: item.collectionCount,
     };
-    Object.entries(item).forEach(([key, value]: any[]) => {
+    Object.entries(item.user).forEach(([key, value]: any[]) => {
       result[`user${userLists.indexOf(key)}_setCount`] = value.setCount;
     });
 

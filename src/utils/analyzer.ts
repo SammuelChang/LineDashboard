@@ -31,9 +31,10 @@ export function userDailyStatsCalculator(
       mediaCount: 0,
       setCount: 0,
       collectionCount: 0,
+      user: [],
     };
     parseChat.userLists.forEach((user: any) => {
-      result[moment(date).format("YYYY-MM-DD")][user] = {
+      result[moment(date).format("YYYY-MM-DD")]["user"][user] = {
         date: moment(date).format("YYYY-MM-DD"),
         messageCount: 0,
         messageLength: 0,
@@ -78,15 +79,15 @@ export function userDailyStatsCalculator(
       result[date].setCount += setId !== preSetId ? 1 : 0;
       result[date].collectionCount += collectionId !== preCollectionId ? 1 : 0;
 
-      result[date][userName].callCount += isCall ? 1 : 0;
-      result[date][userName].callDuration += callDuration || 0;
-      result[date][userName].messageCount += isMessage ? 1 : 0;
-      result[date][userName].messageLength += messageLength || 0;
-      result[date][userName].stickerCount += isSticker ? 1 : 0;
-      result[date][userName].emojiCount += withEmoji ? emojiCount : 0;
-      result[date][userName].mediaCount += isMedia ? 1 : 0;
-      result[date][userName].setCount += setId !== preSetId ? 1 : 0;
-      result[date][userName].collectionCount +=
+      result[date]["user"][userName].callCount += isCall ? 1 : 0;
+      result[date]["user"][userName].callDuration += callDuration || 0;
+      result[date]["user"][userName].messageCount += isMessage ? 1 : 0;
+      result[date]["user"][userName].messageLength += messageLength || 0;
+      result[date]["user"][userName].stickerCount += isSticker ? 1 : 0;
+      result[date]["user"][userName].emojiCount += withEmoji ? emojiCount : 0;
+      result[date]["user"][userName].mediaCount += isMedia ? 1 : 0;
+      result[date]["user"][userName].setCount += setId !== preSetId ? 1 : 0;
+      result[date]["user"][userName].collectionCount +=
         collectionId !== preCollectionId ? 1 : 0;
 
       preSetId = setId;
@@ -175,6 +176,45 @@ export function dailyStatsCalculator(
 }
 
 /**
+ * 計算個別使用者整體聊天數據
+ */
+export function summaryStatsByUserCalculator(
+  chat: IChat,
+  userDailyStats: IDailyStats[]
+): any {
+  const sum = (array: any[], key: string) =>
+    array.reduce((acc: any, cur: any) => {
+      return acc + cur[key];
+    }, 0);
+
+  const periodFlat = chat.messages.map((i) => i.period);
+  const periodCount = _.countBy(periodFlat, "label");
+  let periodCountByUser: any[] = [];
+
+  chat.userLists.forEach((user: any) => {
+    const periodFlat = chat.messages
+      .filter((i) => i.userName === user)
+      .map((i) => i.period);
+    const periodCount = _.countBy(periodFlat, "label");
+    periodCountByUser.push({ user, periodCount });
+  });
+
+  return {
+    dateCount: dailyStats.length,
+    messageCount: sum(dailyStats, "messageCount"),
+    messageLength: sum(dailyStats, "messageLength"),
+    callCount: sum(dailyStats, "callCount"),
+    callDuration: sum(dailyStats, "callDuration"),
+    stickerCount: sum(dailyStats, "stickerCount"),
+    emojiCount: sum(dailyStats, "emojiCount"),
+    setCount: sum(dailyStats, "setCount"),
+    collectionCount: sum(dailyStats, "collectionCount"),
+    periodCount: periodCount,
+    periodCountByUser: periodCountByUser as [],
+  };
+}
+
+/**
  * 計算整體聊天數據
  */
 export function summaryStatsCalculator(
@@ -188,6 +228,15 @@ export function summaryStatsCalculator(
 
   const periodFlat = chat.messages.map((i) => i.period);
   const periodCount = _.countBy(periodFlat, "label");
+  let periodCountByUser: any[] = [];
+
+  chat.userLists.forEach((user: any) => {
+    const periodFlat = chat.messages
+      .filter((i) => i.userName === user)
+      .map((i) => i.period);
+    const periodCount = _.countBy(periodFlat, "label");
+    periodCountByUser.push({ user, periodCount });
+  });
 
   return {
     dateCount: dailyStats.length,
@@ -200,6 +249,7 @@ export function summaryStatsCalculator(
     setCount: sum(dailyStats, "setCount"),
     collectionCount: sum(dailyStats, "collectionCount"),
     periodCount: periodCount,
+    periodCountByUser: periodCountByUser as [],
   };
 }
 
@@ -214,15 +264,17 @@ export function recordCalculator(
     const result: any = _.maxBy(rawData, key);
     return {
       data: result,
-      value: result[key],
+      date: rawData.length > 0 ? result.date : "",
+      value: rawData.length > 0 ? result[key] : 0,
       unit: unit,
     };
   };
 
   return {
+    // FIXME chat不會被篩選，所以不會因為資料不足而消失
     maxMessageLength: lodashTransformer(chat.messages, "messageLength", "字"),
     maxCallDuration: lodashTransformer(chat.messages, "callDuration", "分"),
-    maxMessageCount: lodashTransformer(dailyStats, "messageCount", "個"),
+    maxMessageCount: lodashTransformer(dailyStats, "messageCount", "則"),
     maxCallCount: lodashTransformer(dailyStats, "callCount", "通"),
     maxStickerCount: lodashTransformer(dailyStats, "stickerCount", "個"),
     maxEmojiCount: lodashTransformer(dailyStats, "emojiCount", "個"),

@@ -105,6 +105,7 @@ function messageTypeParser(message: string) {
     "群組名稱",
     "已封鎖使用網址",
     "相簿內的照片",
+    "設定公告",
   ];
 
   const isMedia = MediaLists.some((el) => message.includes(el)); // 媒體訊息（非一般文字）
@@ -183,6 +184,7 @@ function isCrossLineMessage(message: string, isCrossLine: any) {
   const isEnd = /"$/.test(message);
 
   if (isStart && isEnd) {
+    return "start";
   } else if (isStart) {
     return "start";
   } else if (isEnd) {
@@ -280,6 +282,8 @@ export function chatProcessor(content: string) {
   let preMessage = {} as any;
   let setId = 0;
   let collectionId = 0;
+  let diffMinsFromPreSet = 0;
+  let diffMinsFromPreCollection = 0;
 
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const { title, titleUserLists } = basicInfoProcessor(lines[0]);
@@ -337,11 +341,13 @@ export function chatProcessor(content: string) {
 
       // 新一次訊息傳送（間隔時間較短，相同使用者，與前一筆訊息相鄰10分鐘內之集合）
       if (isMessage && !(diffMinsFromPre < 10 && sameUserFromPre)) {
+        diffMinsFromPreSet = diffMinsFromPre;
         setId += 1;
       }
 
       // 新一輪對話（間隔時間較長，不論使用者，與前一筆訊息相鄰3小時內之集合）
       if (isMessage && !(diffMinsFromPre < 180)) {
+        diffMinsFromPreCollection = diffMinsFromPre;
         collectionId += 1;
       }
 
@@ -377,6 +383,9 @@ export function chatProcessor(content: string) {
         messageLength: singleLine.split(/(\s+)/).slice(4).join("").length,
         setId: setId,
         collectionId: collectionId,
+        diffMinsFromPreMessage: diffMinsFromPre,
+        diffMinsFromPreSet,
+        diffMinsFromPreCollection,
         // fullContent: singleLine,
       };
 

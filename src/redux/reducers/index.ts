@@ -9,14 +9,17 @@ import msgCallChart from "../slices/chart/msgCallChart";
 import stickerEmojiChart from "../slices/chart/stickerEmojiChart";
 import chatPowerChart from "../slices/chart/chatPowerChart";
 import mediaPowerChart from "../slices/chart/mediaPowerChart";
+import contactPeriodPieChart from "../slices/chart/contactPeriodPieChart";
 import summaryBlocks from "../slices/chart/summaryBlocks";
 import recordBlocks from "../slices/chart/recordBlocks";
 import chatDensityChart from "../slices/chart/chatDensityLineChart";
 import context from "../slices/context";
 import file from "../slices/file";
+import messages from "../slices/stats/messages";
 
 const rootReducers = combineReducers({
   content,
+  messages,
   userDailyStats,
   dailyStats,
   summaryStats,
@@ -26,6 +29,7 @@ const rootReducers = combineReducers({
   stickerEmojiChart,
   chatPowerChart,
   mediaPowerChart,
+  contactPeriodPieChart,
   summaryBlocks,
   recordBlocks,
   chatDensityChart,
