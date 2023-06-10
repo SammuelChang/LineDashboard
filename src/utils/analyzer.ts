@@ -180,7 +180,7 @@ export function dailyStatsCalculator(
  */
 export function summaryStatsByUserCalculator(
   chat: IChat,
-  userDailyStats: IDailyStats[]
+  dailyStats: IDailyStats[]
 ): any {
   const sum = (array: any[], key: string) =>
     array.reduce((acc: any, cur: any) => {

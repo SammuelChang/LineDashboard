@@ -42,9 +42,7 @@ export default function Header({ toggleTheme }: any) {
               <a>提供建議</a>
             </li> */}
             <Link to="/">
-              <li>
-                <a>原始碼</a>
-              </li>
+              <li>原始碼</li>
             </Link>
             {/* <li>
               <a>關於作者</a>
@@ -67,9 +65,7 @@ export default function Header({ toggleTheme }: any) {
               <a>提供建議</a>
             </li> */}
           <Link to="https://github.com/SammuelChang/LineDashboard">
-            <li>
-              <a>原始碼</a>
-            </li>
+            <li>原始碼</li>
           </Link>
           {/* <li>
               <a>關於作者</a>

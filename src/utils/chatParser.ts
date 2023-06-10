@@ -168,6 +168,7 @@ function userDataProcessor(message: string, userLists: string[]) {
       /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,
       ""
     );
+  // @ts-ignore
   const userName = userString
     .match(/^([^已]*)(已[^已]*)*$/)[1]
     .match(/^([^加]*)(加[^加]*)*$/)[1];

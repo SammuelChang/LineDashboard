@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const dateRangeSetter = (parseChat) => {
+export const dateRangeSetter = (parseChat: any) => {
   return [
     {
       key: "nearlyYear",
