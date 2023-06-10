@@ -1,7 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { useAppDispatch } from "../../hook";
+import { useAppSelector, useAppDispatch } from "../../hook";
 import { uploadFile } from "../../redux/slices/file";
+import { useNavigate } from "react-router-dom";
 
 const NotClickableArea = ({
   children,
@@ -25,6 +26,7 @@ const NotClickableArea = ({
 };
 
 export function StyledDropzone(props: any) {
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const onDrop = useCallback((acceptedFiles: any) => {
     const file = acceptedFiles[0];
@@ -34,6 +36,10 @@ export function StyledDropzone(props: any) {
     reader.onerror = () => {};
     reader.onload = () => {
       dispatch(uploadFile(reader.result));
+      setLoading(true);
+      setTimeout(() => {
+        handleClick();
+      }, 3000);
     };
     reader.readAsText(file);
   }, []);
@@ -54,9 +60,19 @@ export function StyledDropzone(props: any) {
   });
 
   const file = acceptedFiles.map((file: any) => file.path);
+  const summaryBlocks = useAppSelector((state) => state.summaryBlocks);
+  const navigate = useNavigate();
+  const handleClick = () => navigate("/analysis");
 
   return (
     <div className="container w-10/12 mx-auto bg-light-500 dark:bg-dark-700 relative">
+      {loading && (
+        <div className="bg-light-500 dark:bg-dark-500 w-full h-full absolute top-0 left-0 flex justify-center items-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#91B5A9] via-[#E9BAAA] to-[#DB8381] animate-spin">
+            <div className="h-9 w-9 rounded-full bg-gray-200"></div>
+          </div>
+        </div>
+      )}
       <div
         {...getRootProps({})}
         className={`h-60 flex flex-col items-start sm:items-center p-5 
@@ -72,6 +88,10 @@ export function StyledDropzone(props: any) {
           <span className="underline">拖曳至區域中</span>
           ，上傳至瀏覽器內，限純文字檔案(.txt)
         </p>
+        <div className="my-5 p-2 bg-gray-300 bg-opacity-10">
+          <p>訊息分析與儲存僅在您開啟的瀏覽器中進行，不會上傳至任何伺服器。</p>
+          <p>訊息分析僅為娛樂用途，網頁詮釋和提醒只是參考唷！</p>
+        </div>
         <NotClickableArea clickable={!!file}>
           <p>{file ? file : ""}</p>
         </NotClickableArea>

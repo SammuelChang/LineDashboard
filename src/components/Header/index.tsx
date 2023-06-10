@@ -32,21 +32,23 @@ export default function Header({ toggleTheme }: any) {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-subBackground text-text rounded-box w-52 border-border [&>li>a]:active:text-tex"
             onClick={() => setIsOpened((isOpened) => !isOpened)}
           >
-            <li>
+            {/* <li>
               <Link to="/analysis">開始分析</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <a>更新紀錄</a>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <a>提供建議</a>
-            </li>
-            <li>
-              <a>原始碼</a>
-            </li>
-            <li>
+            </li> */}
+            <Link to="/">
+              <li>
+                <a>原始碼</a>
+              </li>
+            </Link>
+            {/* <li>
               <a>關於作者</a>
-            </li>
+            </li> */}
           </ul>
         </div>
         <Link to="/">
@@ -55,21 +57,23 @@ export default function Header({ toggleTheme }: any) {
       </div>
       <div className="navbar-end">
         <ul className="menu menu-horizontal px-1 hidden lg:flex text-text">
-          <li>
-            <Link to="/analysis">開始分析</Link>
-          </li>
-          <li>
-            <a>更新紀錄</a>
-          </li>
-          <li>
-            <a>提供建議</a>
-          </li>
-          <li>
-            <a>原始碼</a>
-          </li>
-          <li>
-            <a>關於作者</a>
-          </li>
+          {/* <li>
+              <Link to="/analysis">開始分析</Link>
+            </li> */}
+          {/* <li>
+              <a>更新紀錄</a>
+            </li> */}
+          {/* <li>
+              <a>提供建議</a>
+            </li> */}
+          <Link to="https://github.com/SammuelChang/LineDashboard">
+            <li>
+              <a>原始碼</a>
+            </li>
+          </Link>
+          {/* <li>
+              <a>關於作者</a>
+            </li> */}
         </ul>
       </div>
       <label

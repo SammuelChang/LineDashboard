@@ -239,9 +239,12 @@ function Analysis() {
           </ChartContainer>
         )}
         {stickerEmojiChartState && (
-          <ChartContainer title="敷衍程度" loading={loading}>
-            <Line data={stickerEmojiChartState} />
-          </ChartContainer>
+          <div className="text-text">
+            <ChartContainer title="敷衍程度" loading={loading}>
+              <Line data={stickerEmojiChartState} />
+            </ChartContainer>
+            <p>※ 僅供參考，也是有人很認真挑選貼圖代替文字意義</p>
+          </div>
         )}
       </section>
       <section className="advanced w-full mb-10">
@@ -257,9 +260,26 @@ function Analysis() {
           </ChartContainer>
         )}
         {chatDensityChart && (
-          <ChartContainer title="對話密度" loading={loading}>
-            <Line data={chatDensityChart} />
-          </ChartContainer>
+          <div>
+            <ChartContainer title="對話密度" loading={loading}>
+              <Line data={chatDensityChart} />
+            </ChartContainer>
+            <div className="text-text">
+              <p>
+                <span className="text-message-500">對話組數</span>
+                ：連續性對話計算單位，定義為「相同使用者，與前一筆訊息相鄰10分鐘內之集合」
+              </p>
+              <p>
+                <span className="text-call-500">對話回合數</span>
+                ：沒有長時間離開或閒置的對話計算單位，定義為「不論使用者，與前一筆訊息相鄰3小時內之集合」
+              </p>
+              <p>
+                ※ 當<span className="text-call-500">對話回合數</span>
+                明顯大於<span className="text-message-500">對話組數</span>
+                ，表示每次都只傳送少許訊息
+              </p>
+            </div>
+          </div>
         )}
         {contactPeriodPieChart && (
           <ChartContainer title="訊息時段" loading={loading} center={true}>

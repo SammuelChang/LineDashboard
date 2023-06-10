@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+import { StyledDropzone } from "../../components/DropZone";
+
 function Home() {
   return (
-    <div className="h-fit w-screen">
-      <div className="w-8/12 max-w-[800px] h-[calc(100vh-64px)] flex flex-col items-center justify-center mx-auto text-text ">
+    <div className="h-screen w-screen">
+      <div className="w-8/12 max-w-[800px] flex flex-col items-center justify-center mx-auto text-text ">
         <h1 className="w-full text-6xl font-extrabold mb-6 text-center">
           想要了解聊天
           <span className="pb-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-[length:100%_8px] bg-no-repeat bg-bottom">
@@ -13,12 +16,15 @@ function Home() {
         <p className="mb-6 px-28">
           Line訊息儀表板，提供你跟重要對象對話紀錄的整體檢視，除了有淺顯易懂的數字和分析外，也提供你長期趨勢，更能從其中嘗試判斷目前進展狀況
         </p>
-        <button className="text-3xl text-text rounded-md bg-messageDefault px-6 py-4 mt-28">
-          開始分析
-        </button>
-        <p className="text-text mt-20">捲動查看更多介紹</p>
+        <br />
+        <StyledDropzone />
+        <Link to="/analysis">
+          <button className="mt-20 mb-10 px-10 py-5 rounded-md bg-message-400 text-black">
+            使用範例
+          </button>
+        </Link>
       </div>
-      <div className="flex flex-wrap gap-10 justify-center text-text">
+      {/* <div className="flex flex-wrap gap-10 justify-center text-text">
         <div className="p-10 flex flex-col items-center gap-4">
           <div className="w-64 h-64 bg-gray-400"></div>
           <div className="font-bold text-2xl">掌握重要數字</div>
@@ -34,7 +40,7 @@ function Home() {
           <div className="font-bold text-2xl">簡單精確的詮釋</div>
           <div>Lorem ipsum dolor sit amet consectetur</div>
         </div>
-      </div>
+      </div> */}
       {/* <div className="w-[500px] min-w-fit m-10 bg-[#adbbe2] dark:bg-black rounded-md p-5 text-text">
         <div className="chat chat-start">
           <div className="chat-image avatar">
