@@ -264,6 +264,17 @@ function timeGapCalculator(currentTime: string, previousTime: string): number {
 }
 
 /**
+ * 網址處理
+ */
+function replaceURLsWithAtSymbol(input: string) {
+  const urlReg = new RegExp(
+    "^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
+  );
+
+  return input.replace(urlReg, "@"); // 網址取代為指定符號，使計算長度為1
+}
+
+/**
  * 系統訊息處理
  */
 function sysMessageProcessor() {}
@@ -290,7 +301,7 @@ export function chatProcessor(content: string) {
   const { title, titleUserLists } = basicInfoProcessor(lines[0]);
 
   for (let i = 0; i < lines.length; i++) {
-    singleLine = lines[i];
+    singleLine = replaceURLsWithAtSymbol(lines[i]);
     isCrossLine = isCrossLineMessage(singleLine, isCrossLine);
 
     const { isMedia, isSystem, isText, isMessage, note } =
