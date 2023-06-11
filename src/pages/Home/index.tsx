@@ -25,7 +25,7 @@ function Home() {
           </button>
         </Link>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center text-text">
         <Link
           to="https://www.tech-girlz.com/2020/07/line-chat-export.html"
           target="_blank"

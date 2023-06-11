@@ -18,9 +18,7 @@ export default function ChartContainer({
         center ? "flex flex-col items-center" : ""
       }`}
     >
-      <h1 className="text-center text-dark-300 dark:text-light-500 text-2xl font-bold pb-2">
-        {title}
-      </h1>
+      <h1 className="text-center text-2xl font-bold pb-2 text-text">{title}</h1>
       {children}
       {loading && (
         <div className="bg-light-500 dark:bg-dark-500 w-full h-full absolute top-0 left-0 flex justify-center items-center">

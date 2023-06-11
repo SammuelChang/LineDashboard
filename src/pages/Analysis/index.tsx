@@ -175,7 +175,7 @@ function Analysis() {
       </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
         <div className="p-2 dark:text-text">
-          <strong>時間範圍：</strong>
+          <strong className="text-text">時間範圍：</strong>
           <span className="py-2">
             {dateRangeLists.map((item: any) => (
               <button

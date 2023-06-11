@@ -6,7 +6,7 @@ export default function Banner(props: any) {
 
   return (
     <div
-      className={`h-min-12 ${paddingVariants[type]} bg-light-500 dark:bg-dark-700  ${textVariants[type]} font-bold rounded-lg text-3xl flex justify-center items-center my-4 relative`}
+      className={`h-min-12 ${paddingVariants[type]} bg-light-500 dark:bg-dark-700 text-text ${textVariants[type]} font-bold rounded-lg text-3xl flex justify-center items-center my-4 relative`}
     >
       {title}
       {children}
