@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from "../../hook";
 import { uploadFile } from "../../redux/slices/file";
 import { useNavigate } from "react-router-dom";
 
+declare let gtag: Function;
 const NotClickableArea = ({
   children,
   clickable,
@@ -37,6 +38,7 @@ export function StyledDropzone(props: any) {
     reader.onload = () => {
       dispatch(uploadFile(reader.result));
       setLoading(true);
+      gtag("event", "upload", {});
       setTimeout(() => {
         handleClick();
       }, 3000);
