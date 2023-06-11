@@ -38,7 +38,9 @@ export function StyledDropzone(props: any) {
     reader.onload = () => {
       dispatch(uploadFile(reader.result));
       setLoading(true);
-      gtag("event", "upload", {});
+      if (location.origin === "https://good-line-dashboard.web.app") {
+        gtag("event", "upload", {});
+      }
       setTimeout(() => {
         handleClick();
       }, 3000);

@@ -9,9 +9,11 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      if (location.origin === "https://good-line-dashboard.web.app") {
+        gtag('js', new Date());
 
-      gtag('config', 'G-YJ8WTSSBZ4');
+        gtag('config', 'G-YJ8WTSSBZ4');
+      }
     </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
