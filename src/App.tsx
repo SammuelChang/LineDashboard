@@ -8,6 +8,7 @@ import ProcessAnalysis from "./pages/Process/analysis";
 import ProcessCheck from "./pages/Process/check";
 import Header from "./components/Header";
 import Maintain from "./pages/Maintain";
+import Steps from "./pages/Steps";
 
 const isDarkMode = () =>
   window.matchMedia &&
@@ -63,6 +64,7 @@ function App() {
           <Route path="check" element={<ProcessCheck />}></Route>
         </Route> */}
         <Route path="maintain" element={<Maintain />}></Route>
+        <Route path="steps" element={<Steps />}></Route>
         <Route path="analysis" element={<Analysis />}></Route>
       </Routes>
     </div>

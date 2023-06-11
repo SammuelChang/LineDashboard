@@ -26,11 +26,7 @@ function Home() {
         </Link>
       </div>
       <div className="flex justify-center text-text pb-5">
-        <Link
-          to="https://www.tech-girlz.com/2020/07/line-chat-export.html"
-          target="_blank"
-          className="flex items-center"
-        >
+        <Link to="/steps" target="_blank" className="flex items-center">
           <LuExternalLink />
           <span>&nbsp;如何取得聊天記錄文字檔？</span>
         </Link>
