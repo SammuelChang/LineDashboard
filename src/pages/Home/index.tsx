@@ -4,7 +4,7 @@ import { LuExternalLink } from "react-icons/lu";
 
 function Home() {
   return (
-    <div className="h-fit md:h-screen w-screen">
+    <div className="h-fit w-screen">
       <div className="w-8/12 max-w-[800px] flex flex-col items-center justify-center mx-auto text-text ">
         <h1 className="w-full text-5xl font-extrabold mb-6 text-center tracking-wide leading-snug">
           想要了解聊天

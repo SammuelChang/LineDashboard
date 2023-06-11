@@ -4,10 +4,10 @@
 
 @layer base {
   html {
-    @apply bg-white dark:bg-gray-700 h-screen;
+    @apply bg-background h-screen;
   }
   body {
-    @apply bg-white dark:bg-gray-700 min-h-screen;
+    @apply bg-background min-h-screen;
   }
   ::selection {
     background: #91B5A9
