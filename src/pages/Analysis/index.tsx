@@ -163,14 +163,14 @@ function Analysis() {
         `}
           type="strong"
         >
-          <p className="absolute right-0 mr-5">
+          {/* <p className="absolute right-0 mr-5">
             <Link to="/process/upload">
               <GrRefresh
                 className="[&>path]:stroke-text hover:scale-110 duration-300"
                 size="1.5rem"
               />
             </Link>
-          </p>
+          </p> */}
         </Banner>
       </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">

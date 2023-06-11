@@ -60,7 +60,7 @@ export function StyledDropzone(props: any) {
   });
 
   const file = acceptedFiles.map((file: any) => file.path);
-  const summaryBlocks = useAppSelector((state) => state.summaryBlocks);
+  const content = useAppSelector((state) => state.content);
   const navigate = useNavigate();
   const handleClick = () => navigate("/analysis");
 
@@ -86,12 +86,16 @@ export function StyledDropzone(props: any) {
         <p className="my-auto">
           <span className="underline">點選此處</span>或將檔案
           <span className="underline">拖曳至區域中</span>
-          ，上傳至瀏覽器內，限純文字檔案(.txt)
+          ，以上傳至瀏覽器內，限純文字檔案(.txt)
         </p>
-        <div className="my-5 p-2 bg-gray-300 bg-opacity-10">
-          <p>訊息分析與儲存僅在您開啟的瀏覽器中進行，不會上傳至任何伺服器。</p>
-          <p>訊息分析僅為娛樂用途，網頁詮釋和提醒只是參考唷！</p>
-        </div>
+        {!loading && (
+          <div className="my-auto p-2 bg-gray-300 bg-opacity-10">
+            <p>
+              訊息分析與儲存僅在您開啟的瀏覽器中進行，不會上傳至任何伺服器。
+            </p>
+            <p>訊息分析僅為娛樂用途，網頁詮釋和提醒只是參考唷！</p>
+          </div>
+        )}
         <NotClickableArea clickable={!!file}>
           <p>{file ? file : ""}</p>
         </NotClickableArea>
