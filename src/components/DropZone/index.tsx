@@ -79,7 +79,7 @@ export function StyledDropzone(props: any) {
       )}
       <div
         {...getRootProps({})}
-        className={`h-60 flex flex-col items-start sm:items-center p-5 
+        className={`h-min-60 h-fit flex flex-col items-start sm:items-center p-5 
         border-dashed border-2 rounded-sm border-gray-200 dark:border-gray-600 outline-none
         text-gray-400 transition .24s ease-in-out
         ${isFocused ? "border-sticker-500 dark:border-sticker-500" : ""}
@@ -87,7 +87,7 @@ export function StyledDropzone(props: any) {
         ${isDragReject ? "border-call-500 dark:border-call-500" : ""}`}
       >
         <input {...getInputProps()} />
-        <p className="my-auto">
+        <p className="my-5 md:my-10">
           <span className="underline">點選此處</span>或將檔案
           <span className="underline">拖曳至區域中</span>
           ，以上傳至瀏覽器內，限純文字檔案(.txt)

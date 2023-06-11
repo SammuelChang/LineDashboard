@@ -38,12 +38,24 @@ export default function Header({ toggleTheme }: any) {
             {/* <li>
               <a>更新紀錄</a>
             </li> */}
-            {/* <li>
-              <a>提供建議</a>
-            </li> */}
-            <Link to="/">
-              <li>原始碼</li>
-            </Link>
+            <li>
+              <Link
+                to="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                提供建議
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="https://github.com/SammuelChang/LineDashboard"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                原始碼
+              </Link>
+            </li>
             {/* <li>
               <a>關於作者</a>
             </li> */}
@@ -61,12 +73,24 @@ export default function Header({ toggleTheme }: any) {
           {/* <li>
               <a>更新紀錄</a>
             </li> */}
-          {/* <li>
-              <a>提供建議</a>
-            </li> */}
-          <Link to="https://github.com/SammuelChang/LineDashboard">
-            <li>原始碼</li>
-          </Link>
+          <li>
+            <Link
+              to="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              提供建議
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="https://github.com/SammuelChang/LineDashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              原始碼
+            </Link>
+          </li>
           {/* <li>
               <a>關於作者</a>
             </li> */}
