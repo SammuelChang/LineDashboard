@@ -34,9 +34,10 @@ import { transformRecordBlocks } from "../../redux/slices/chart/recordBlocks";
 import { dateRangeSetter } from "../../utils";
 import { useAppSelector, useAppDispatch } from "../../hook";
 import { filterMessages, setMessages } from "../../redux/slices/stats/messages";
-import { Link } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function Analysis() {
+  const [searchParams] = useSearchParams();
   const file = useAppSelector((state) => state.file);
   const content = useAppSelector((state) => state.content);
   const messages = useAppSelector((state) => state.messages);
@@ -64,6 +65,7 @@ function Analysis() {
   const [isFullChat, setIsFullChat] = useState<boolean>(false);
   const [dateRangeLists, setDateRangeLists] = useState<any>([]);
   const [dateRange, setDateRange] = useState<any>({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (Object.keys(file).length !== 0) return;
@@ -72,6 +74,10 @@ function Analysis() {
       const response = await fetch(demo);
       const content = await response.text();
       dispatch(parseFile(content));
+    }
+    if (!searchParams.get("isDemo")) {
+      navigate("/");
+      return;
     }
 
     loadFile();
@@ -158,9 +164,13 @@ function Analysis() {
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
       <div>
         <Banner
-          title={`
-          ${content.title}${Object.keys(file).length === 0 ? "（範例）" : ""}
-        `}
+          title={
+            content.title
+              ? `${content.title}${
+                  Object.keys(file).length === 0 ? "（範例）" : ""
+                }`
+              : "載入中"
+          }
           type="strong"
         >
           {/* <p className="absolute right-0 mr-5">

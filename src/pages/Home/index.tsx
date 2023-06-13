@@ -19,7 +19,7 @@ function Home() {
         </p>
         <br />
         <StyledDropzone />
-        <Link to="/analysis">
+        <Link to="/analysis?isDemo=true">
           <button className="mt-20 mb-10 px-10 py-5 rounded-md bg-message-400 text-black">
             使用範例
           </button>
