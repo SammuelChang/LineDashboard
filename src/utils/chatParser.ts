@@ -301,7 +301,7 @@ export function chatProcessor(content: string) {
   const { title, titleUserLists } = basicInfoProcessor(lines[0]);
 
   for (let i = 0; i < lines.length; i++) {
-    singleLine = replaceURLsWithAtSymbol(lines[i]);
+    singleLine = lines[i];
     isCrossLine = isCrossLineMessage(singleLine, isCrossLine);
 
     const { isMedia, isSystem, isText, isMessage, note } =
@@ -392,7 +392,10 @@ export function chatProcessor(content: string) {
         message: isSystem
           ? singleLine.split(/(\s+)/).slice(2).join("")
           : singleLine.split(/(\s+)/).slice(4).join(""),
-        messageLength: singleLine.split(/(\s+)/).slice(4).join("").length,
+        messageLength: replaceURLsWithAtSymbol(lines[i])
+          .split(/(\s+)/)
+          .slice(4)
+          .join("").length,
         setId: setId,
         collectionId: collectionId,
         diffMinsFromPreMessage: diffMinsFromPre,
