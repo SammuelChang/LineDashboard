@@ -69,7 +69,7 @@ export function StyledDropzone(props: any) {
   const handleClick = () => navigate("/analysis");
 
   return (
-    <div className="container w-10/12 mx-auto bg-light-500 dark:bg-dark-700 relative">
+    <div className="container w-10/12 min-h-[212px] mx-auto bg-light-500 dark:bg-dark-700 relative">
       {loading && (
         <div className="bg-light-500 dark:bg-dark-500 w-full h-full absolute top-0 left-0 flex justify-center items-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#91B5A9] via-[#E9BAAA] to-[#DB8381] animate-spin">
@@ -79,7 +79,7 @@ export function StyledDropzone(props: any) {
       )}
       <div
         {...getRootProps({})}
-        className={`h-min-60 h-fit flex flex-col items-start sm:items-center p-5 
+        className={`flex flex-col items-start sm:items-center p-5 
         border-dashed border-2 rounded-sm border-gray-200 dark:border-gray-600 outline-none
         text-gray-400 transition .24s ease-in-out
         ${isFocused ? "border-sticker-500 dark:border-sticker-500" : ""}
