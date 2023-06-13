@@ -416,6 +416,8 @@ export function chatProcessor(content: string) {
     maxDate: dateLists[dateLists.length - 1],
     messages: messages,
   };
-  console.log("chat :>> ", chat);
+  if (window.location.hostname === "localhost") {
+    console.log("chat :>> ", chat);
+  }
   return chat;
 }
