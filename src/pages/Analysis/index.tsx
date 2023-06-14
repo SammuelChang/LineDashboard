@@ -162,6 +162,9 @@ function Analysis() {
 
   return (
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
+      {window.screen.width < 500 && (
+        <p className="text-text text-center">※ 手機版建議使用橫向觀看</p>
+      )}
       <div>
         <Banner
           title={
@@ -185,7 +188,7 @@ function Analysis() {
       </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
         <div className="p-2 dark:text-text">
-          <strong className="text-text">時間範圍：</strong>
+          <strong className="text-text block mb-2 md:inline">時間範圍：</strong>
           <span className="py-2">
             {dateRangeLists.map((item: any) => (
               <button

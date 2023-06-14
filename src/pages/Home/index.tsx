@@ -7,15 +7,15 @@ function Home() {
     <div className="h-fit w-screen">
       <div className="w-8/12 max-w-[800px] flex flex-col items-center justify-center mx-auto text-text ">
         <h1 className="w-full text-5xl font-extrabold mb-6 text-center tracking-wide leading-snug">
-          想要了解聊天
+          想要了解
           <span className="pb-2 bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 bg-[length:100%_8px] bg-no-repeat bg-bottom">
-            進展到哪
+            對話品質
           </span>
           嗎？
         </h1>
         <br />
         <p className="mb-6 max-w-xl">
-          Line訊息儀表板，提供你跟重要對象對話紀錄的整體檢視，除了有淺顯易懂的數字和分析外，也提供你長期趨勢，更能從其中嘗試判斷目前進展狀況
+          Line訊息儀表板，提供你跟重要對象對話紀錄的整體檢視，除了有淺顯易懂的數字和分析外，也提供你長期趨勢，更能從其中嘗試判斷目前進展狀況。
         </p>
         <br />
         <StyledDropzone />
