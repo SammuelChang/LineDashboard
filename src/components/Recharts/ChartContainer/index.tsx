@@ -23,7 +23,7 @@ export default function ChartContainer({
       {loading && (
         <div className="bg-light-500 dark:bg-dark-500 w-full h-full absolute top-0 left-0 flex justify-center items-center">
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-[#91B5A9] via-[#E9BAAA] to-[#DB8381] animate-spin">
-            <div className="h-9 w-9 rounded-full bg-gray-200"></div>
+            <div className="h-9 w-9 rounded-full bg-background"></div>
           </div>
         </div>
       )}
