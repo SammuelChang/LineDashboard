@@ -238,7 +238,7 @@ function Analysis() {
             <span className="text-sm">/5</span>
           </div>
           <div className="stat-desc">
-            依據訊息訊息持續性與回覆時間進行簡易判斷
+            依據訊息持續性與回覆時間間隔進行簡易判斷
           </div>
         </div>
       </div>
