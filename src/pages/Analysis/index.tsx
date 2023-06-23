@@ -232,7 +232,7 @@ function Analysis() {
       {/* <Step phase={summaryStats.score} /> */}
       <div className="stats w-full bg-background text-text text-center mb-10">
         <div className="stat">
-          <div className="stat-title mb-2">總計分數</div>
+          <div className="stat-title mb-2">訊息活躍度評估分數</div>
           <div className="stat-value mb-2">
             {summaryStats.score}
             <span className="text-sm">/5</span>
