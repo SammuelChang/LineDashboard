@@ -7,7 +7,6 @@ import Pie from "../../components/Recharts/Pie";
 import Legend from "../../components/Legend";
 import Record from "../../components/Record";
 import Banner from "../../components/Banner";
-import { GrRefresh } from "react-icons/gr";
 
 import { parseFile } from "../../redux/slices/content";
 import {
@@ -35,6 +34,7 @@ import { dateRangeSetter } from "../../utils";
 import { useAppSelector, useAppDispatch } from "../../hook";
 import { filterMessages, setMessages } from "../../redux/slices/stats/messages";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { Step } from "../../components/Step";
 
 function Analysis() {
   const [searchParams] = useSearchParams();
@@ -67,24 +67,28 @@ function Analysis() {
   const [dateRange, setDateRange] = useState<any>({});
   const navigate = useNavigate();
 
+  async function loadFile() {
+    const response = await fetch(demo);
+    const content = await response.text();
+    dispatch(parseFile(content));
+  }
+
   useEffect(() => {
     if (Object.keys(file).length !== 0) return;
     if (Object.keys(demo).length === 0) return;
-    async function loadFile() {
-      const response = await fetch(demo);
-      const content = await response.text();
-      dispatch(parseFile(content));
-    }
     if (!searchParams.get("isDemo")) {
       navigate("/");
       return;
     }
-
     loadFile();
   }, [demo]);
 
   useEffect(() => {
     if (Object.keys(file).length === 0) return;
+    if (searchParams.get("isDemo")) {
+      loadFile();
+      return;
+    }
     dispatch(parseFile(file));
   }, [file]);
 
@@ -223,6 +227,19 @@ function Analysis() {
               趨勢<strong>包含</strong>未聊天日期
             </p>
           )}
+        </div>
+      </div>
+      {/* <Step phase={summaryStats.score} /> */}
+      <div className="stats w-full bg-background text-text text-center mb-10">
+        <div className="stat">
+          <div className="stat-title mb-2">總計分數</div>
+          <div className="stat-value mb-2">
+            {summaryStats.score}
+            <span className="text-sm">/5</span>
+          </div>
+          <div className="stat-desc">
+            依據訊息訊息持續性與回覆時間進行簡易判斷
+          </div>
         </div>
       </div>
       <section className="legend grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 gap-4">

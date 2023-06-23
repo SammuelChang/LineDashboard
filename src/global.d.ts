@@ -82,6 +82,7 @@ interface ISummaryStats {
   collectionCount: number;
   periodCount: {};
   periodCountByUser: [];
+  score: number;
 }
 
 interface IRecordValue {

@@ -250,6 +250,12 @@ export function summaryStatsCalculator(
     collectionCount: sum(dailyStats, "collectionCount"),
     periodCount: periodCount,
     periodCountByUser: periodCountByUser as [],
+    score:
+      +lastHalfYearTouch(chat.messages) +
+      +frequentChatRecord(chat.messages) +
+      +isFrequentlyRespond(chat.messages, "diffMinsFromPreMessage", 5) +
+      +isFrequentlyRespond(chat.messages, "diffMinsFromPreSet", 60) +
+      +isFrequentlyRespond(chat.messages, "diffMinsFromPreCollection", 1440),
   };
 }
 
@@ -279,4 +285,80 @@ export function recordCalculator(
     maxStickerCount: lodashTransformer(dailyStats, "stickerCount", "個"),
     maxEmojiCount: lodashTransformer(dailyStats, "emojiCount", "個"),
   };
+}
+
+/**
+ * 計算日期差距天數
+ * @param date1
+ * @param date2
+ * @returns
+ */
+function dateDiff(date1: string, date2: string) {
+  const eventStartTime = new Date(date1);
+  const eventEndTime = new Date(date2);
+  const diffTime = Math.abs(eventEndTime.valueOf() - eventStartTime.valueOf());
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * 指定日期座落半年內
+ * @param date
+ * @returns
+ */
+function isInHalfYear(date: string) {
+  const targetDate = new Date(date);
+  const current = new Date();
+  const sixMonthAgo = new Date(current.setMonth(current.getMonth() - 6));
+  return targetDate > sixMonthAgo;
+}
+
+/**
+ * 近半年保持一定聊天頻率
+ * @param messages
+ * @returns
+ */
+function lastHalfYearTouch(messages: any) {
+  const chatDate = messages
+    .filter((message: any) => isInHalfYear(message.date))
+    .map((message: any) => message.date);
+  const chatDateCount = new Set(chatDate).size;
+  return chatDateCount / 180 > 0.4;
+}
+
+/**
+ * 對話歷史上經常聊天
+ * @param messages
+ * @returns
+ */
+function frequentChatRecord(messages: any) {
+  const chatDate = messages.map((message: any) => message.date);
+  const chatDateCount = new Set(chatDate).size;
+
+  const firstMessageDate = messages[0].date;
+  const currentDate = messages[messages.length - 1].date;
+  const actualDateCount = dateDiff(firstMessageDate, currentDate);
+  return chatDateCount / actualDateCount > 0.4;
+}
+
+/**
+ * 是否經常快速回覆
+ * @param messages
+ * @param diffType
+ * @param diffThreshold
+ * @returns
+ */
+function isFrequentlyRespond(
+  messages: any,
+  diffType: string,
+  diffThreshold: number
+) {
+  const copyMessages = messages.map((message: any) => message[diffType]);
+  copyMessages.sort();
+
+  const halfIndex = Math.floor(copyMessages.length / 2);
+  const median =
+    copyMessages.length % 2
+      ? copyMessages[halfIndex]
+      : (copyMessages[halfIndex - 1] + copyMessages[halfIndex]) / 2;
+  return median < diffThreshold;
 }
