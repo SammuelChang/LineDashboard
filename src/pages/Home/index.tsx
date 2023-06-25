@@ -1,8 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StyledDropzone } from "../../components/DropZone";
 import { LuExternalLink } from "react-icons/lu";
 
+declare let gtag: Function;
+
 function Home() {
+  const navigate = useNavigate();
+  const handleClickDemo = () => {
+    gtag("event", "demo", {});
+    navigate("/analysis?isDemo=true");
+  };
+  const handleClickSteps = () => {
+    gtag("event", "steps", {});
+  };
+
   return (
     <div className="h-fit w-screen">
       <div className="w-8/12 max-w-[800px] flex flex-col items-center justify-center mx-auto text-text ">
@@ -19,16 +30,17 @@ function Home() {
         </p>
         <br />
         <StyledDropzone />
-        <Link to="/analysis?isDemo=true">
-          <button className="mt-20 mb-10 px-10 py-5 rounded-md bg-message-400 text-black">
-            使用範例
-          </button>
-        </Link>
+        <button
+          className="mt-20 mb-10 px-10 py-5 rounded-md bg-message-400 text-black"
+          onClick={handleClickDemo}
+        >
+          使用範例
+        </button>
       </div>
       <div className="flex justify-center text-text pb-5">
         <Link to="/steps" target="_blank" className="flex items-center">
           <LuExternalLink />
-          <span>&nbsp;如何取得聊天記錄文字檔？</span>
+          <span onClick={handleClickSteps}>&nbsp;如何取得聊天記錄文字檔？</span>
         </Link>
       </div>
       {/* <div className="flex flex-wrap gap-10 justify-center text-text">
