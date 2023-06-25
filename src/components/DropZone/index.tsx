@@ -95,7 +95,7 @@ export function StyledDropzone(props: any) {
         {!loading && (
           <div className="my-auto p-2 bg-gray-300 bg-opacity-10">
             <p>
-              訊息分析與儲存僅在您開啟的瀏覽器中進行，不會上傳至任何伺服器。
+              您的訊息不會上傳至瀏覽器以外的任何地方，資料處理僅在網頁中進行！
             </p>
             <p>訊息分析僅為娛樂用途，網頁詮釋和提醒只是參考唷！</p>
           </div>
