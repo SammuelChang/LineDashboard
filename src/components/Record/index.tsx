@@ -1,13 +1,13 @@
-import { bgVariants } from "../../utils/setting";
+import { bgVariants2 } from "../../utils/setting";
 
 export default function Record({ data }: any) {
-  const { type, title, unit, color, id, date, value } = data;
+  const { type, title, unit, date, value } = data;
 
   return (
     <div
       className={`${
-        bgVariants[type]
-      } bg-opacity-70 chart h-50 w-full text-[#6F6F6F] dark:text-white dark:text-opacity-80 p-4 flex justify-start  items-center rounded-lg relative ${
+        bgVariants2[type]
+      } bg-opacity-70 chart h-50 w-full text-textSecond dark:text-opacity-80 p-4 flex justify-start  items-center rounded-lg relative ${
         value ? "block" : "hidden"
       }`}
     >

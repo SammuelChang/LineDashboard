@@ -1,8 +1,15 @@
 export const bgVariants = {
-  message: "bg-message-500 dark:bg-message-700",
-  call: "bg-call-500 dark:bg-call-700",
-  sticker: "bg-sticker-500 dark:bg-sticker-700",
-  emoji: "bg-emoji-500 dark:bg-emoji-700",
+  message: "bg-messageDefault",
+  call: "bg-callDefault",
+  sticker: "bg-stickerDefault",
+  emoji: "bg-emojiDefault",
+} as any;
+
+export const bgVariants2 = {
+  message: "bg-messageSecond",
+  call: "bg-callSecond",
+  sticker: "bg-stickerSecond",
+  emoji: "bg-emojiSecond",
 } as any;
 
 export const textVariants = {

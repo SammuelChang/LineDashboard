@@ -9,9 +9,12 @@ const fileSlice = createSlice({
     uploadFile(state, action) {
       return action.payload;
     },
+    reset() {
+      return initialState;
+    },
   },
 });
 
 const { actions, reducer } = fileSlice;
-export const { uploadFile } = actions;
+export const { uploadFile, reset } = actions;
 export default reducer;

@@ -105,6 +105,7 @@ function messageTypeParser(message: string) {
     "群組名稱",
     "已封鎖使用網址",
     "相簿內的照片",
+    "設定公告",
   ];
 
   const isMedia = MediaLists.some((el) => message.includes(el)); // 媒體訊息（非一般文字）
@@ -167,6 +168,7 @@ function userDataProcessor(message: string, userLists: string[]) {
       /[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,
       ""
     );
+  // @ts-ignore
   const userName = userString
     .match(/^([^已]*)(已[^已]*)*$/)[1]
     .match(/^([^加]*)(加[^加]*)*$/)[1];
@@ -183,6 +185,7 @@ function isCrossLineMessage(message: string, isCrossLine: any) {
   const isEnd = /"$/.test(message);
 
   if (isStart && isEnd) {
+    return "start";
   } else if (isStart) {
     return "start";
   } else if (isEnd) {
@@ -261,6 +264,17 @@ function timeGapCalculator(currentTime: string, previousTime: string): number {
 }
 
 /**
+ * 網址處理
+ */
+function replaceURLsWithAtSymbol(input: string) {
+  const urlReg = new RegExp(
+    "^(http[s]?:\\/\\/(www\\.)?|ftp:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?"
+  );
+
+  return input.replace(urlReg, "@"); // 網址取代為指定符號，使計算長度為1
+}
+
+/**
  * 系統訊息處理
  */
 function sysMessageProcessor() {}
@@ -280,6 +294,8 @@ export function chatProcessor(content: string) {
   let preMessage = {} as any;
   let setId = 0;
   let collectionId = 0;
+  let diffMinsFromPreSet = 0;
+  let diffMinsFromPreCollection = 0;
 
   const lines = content.replace(/\r\n/g, "\n").split("\n");
   const { title, titleUserLists } = basicInfoProcessor(lines[0]);
@@ -337,11 +353,13 @@ export function chatProcessor(content: string) {
 
       // 新一次訊息傳送（間隔時間較短，相同使用者，與前一筆訊息相鄰10分鐘內之集合）
       if (isMessage && !(diffMinsFromPre < 10 && sameUserFromPre)) {
+        diffMinsFromPreSet = diffMinsFromPre;
         setId += 1;
       }
 
       // 新一輪對話（間隔時間較長，不論使用者，與前一筆訊息相鄰3小時內之集合）
       if (isMessage && !(diffMinsFromPre < 180)) {
+        diffMinsFromPreCollection = diffMinsFromPre;
         collectionId += 1;
       }
 
@@ -374,9 +392,15 @@ export function chatProcessor(content: string) {
         message: isSystem
           ? singleLine.split(/(\s+)/).slice(2).join("")
           : singleLine.split(/(\s+)/).slice(4).join(""),
-        messageLength: singleLine.split(/(\s+)/).slice(4).join("").length,
+        messageLength: replaceURLsWithAtSymbol(lines[i])
+          .split(/(\s+)/)
+          .slice(4)
+          .join("").length,
         setId: setId,
         collectionId: collectionId,
+        diffMinsFromPreMessage: diffMinsFromPre,
+        diffMinsFromPreSet,
+        diffMinsFromPreCollection,
         // fullContent: singleLine,
       };
 
@@ -392,6 +416,8 @@ export function chatProcessor(content: string) {
     maxDate: dateLists[dateLists.length - 1],
     messages: messages,
   };
-  console.log("chat :>> ", chat);
+  if (window.location.hostname === "localhost") {
+    console.log("chat :>> ", chat);
+  }
   return chat;
 }

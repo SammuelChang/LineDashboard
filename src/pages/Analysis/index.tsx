@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
 import demo from "../../utils/demo.txt";
-import ChartContainer from "../../components/ChartContainer";
-import Line from "../../components/Line";
+import ChartContainer from "../../components/Recharts/ChartContainer";
+import Line from "../../components/Recharts/Line";
+import Pie from "../../components/Recharts/Pie";
 import Legend from "../../components/Legend";
 import Record from "../../components/Record";
 import Banner from "../../components/Banner";
@@ -25,15 +26,21 @@ import { transformStickerEmojiChart } from "../../redux/slices/chart/stickerEmoj
 import { transformChatPowerChart } from "../../redux/slices/chart/chatPowerChart";
 import { transformMediaPowerChart } from "../../redux/slices/chart/mediaPowerChart";
 import { transformChatDensityChart } from "../../redux/slices/chart/chatDensityLineChart";
+import { transformContactPeriodPieChart } from "../../redux/slices/chart/contactPeriodPieChart";
 import { transformSummaryBlocks } from "../../redux/slices/chart/summaryBlocks";
 import { transformRecordBlocks } from "../../redux/slices/chart/recordBlocks";
 
 import { dateRangeSetter } from "../../utils";
 import { useAppSelector, useAppDispatch } from "../../hook";
+import { filterMessages, setMessages } from "../../redux/slices/stats/messages";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Step } from "../../components/Step";
 
 function Analysis() {
+  const [searchParams] = useSearchParams();
   const file = useAppSelector((state) => state.file);
   const content = useAppSelector((state) => state.content);
+  const messages = useAppSelector((state) => state.messages);
   const userDailyStats = useAppSelector((state) => state.userDailyStats);
   const dailyStats = useAppSelector((state) => state.dailyStats);
   const summaryStats = useAppSelector((state) => state.summaryStats);
@@ -46,6 +53,9 @@ function Analysis() {
   const chatPowerChart = useAppSelector((state) => state.chatPowerChart);
   const mediaPowerChart = useAppSelector((state) => state.mediaPowerChart);
   const chatDensityChart = useAppSelector((state) => state.chatDensityChart);
+  const contactPeriodPieChart = useAppSelector(
+    (state) => state.contactPeriodPieChart
+  );
   const summaryBlocks = useAppSelector((state) => state.summaryBlocks);
   const recordBlocks = useAppSelector((state) => state.recordBlocks);
 
@@ -55,26 +65,37 @@ function Analysis() {
   const [isFullChat, setIsFullChat] = useState<boolean>(false);
   const [dateRangeLists, setDateRangeLists] = useState<any>([]);
   const [dateRange, setDateRange] = useState<any>({});
+  const navigate = useNavigate();
+
+  async function loadFile() {
+    const response = await fetch(demo);
+    const content = await response.text();
+    dispatch(parseFile(content));
+  }
 
   useEffect(() => {
+    if (Object.keys(file).length !== 0) return;
     if (Object.keys(demo).length === 0) return;
-    async function loadFile() {
-      const response = await fetch(demo);
-      const content = await response.text();
-      dispatch(parseFile(content));
+    if (!searchParams.get("isDemo")) {
+      navigate("/");
+      return;
     }
-
     loadFile();
   }, [demo]);
 
   useEffect(() => {
     if (Object.keys(file).length === 0) return;
+    if (searchParams.get("isDemo")) {
+      loadFile();
+      return;
+    }
     dispatch(parseFile(file));
   }, [file]);
 
   useEffect(() => {
     if (Object.keys(content).length === 0) return;
 
+    dispatch(setMessages({ content }));
     dispatch(analyzeUserDailyStats({ content }));
     dispatch(analyzeDailyStats({ content }));
 
@@ -103,12 +124,14 @@ function Analysis() {
     if (Object.keys(content).length === 0) return;
 
     dispatch(transformSummaryBlocks({ summaryStats }));
+    dispatch(transformContactPeriodPieChart({ summaryStats }));
     dispatch(transformRecordBlocks({ maxStats }));
   }, [summaryStats, maxStats]);
 
   useEffect(() => {
     if (Object.keys(content).length === 0) return;
 
+    dispatch(filterMessages({ content, dateRange }));
     dispatch(filterUserDailyStats({ content, isFullChat, dateRange }));
     dispatch(filterDailyStats({ content, isFullChat, dateRange }));
   }, [dateRange]);
@@ -143,24 +166,42 @@ function Analysis() {
 
   return (
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
-      <Banner
-        title={`
-          ${content.title}${Object.keys(file).length === 0 ? "（範例）" : ""}
-        `}
-        type="strong"
-      />
+      {window.screen.width < 500 && (
+        <p className="text-text text-center">※ 手機版建議使用橫向觀看</p>
+      )}
+      <div>
+        <Banner
+          title={
+            content.title
+              ? `${content.title}${
+                  Object.keys(file).length === 0 ? "（範例）" : ""
+                }`
+              : "載入中"
+          }
+          type="strong"
+        >
+          {/* <p className="absolute right-0 mr-5">
+            <Link to="/process/upload">
+              <GrRefresh
+                className="[&>path]:stroke-text hover:scale-110 duration-300"
+                size="1.5rem"
+              />
+            </Link>
+          </p> */}
+        </Banner>
+      </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
-        <div className="p-2 dark:text-white">
-          <strong>時間範圍：</strong>
+        <div className="p-2 dark:text-text">
+          <strong className="text-text block mb-2 md:inline">時間範圍：</strong>
           <span className="py-2">
             {dateRangeLists.map((item: any) => (
               <button
                 key={item.key}
                 className={`${
                   item["checked"]
-                    ? "bg-gray-800 dark:bg-dark-400 text-white font-bold"
-                    : "bg-gray-300 dark:bg-dark-900 text-white font-bold"
-                } w-fit h-fit bg-gray-300 dark:bg-gray-600 px-4 mx-1 md:mx-2 rounded-lg`}
+                    ? "bg-gray-800 dark:bg-dark-400"
+                    : "bg-gray-300 dark:bg-dark-900"
+                } w-fit h-fit px-4 mx-1 md:mx-2 rounded-lg text-white hover:shadow duration-300`}
                 onClick={() => {
                   dateRangeHandler(item.key);
                 }}
@@ -186,6 +227,19 @@ function Analysis() {
               趨勢<strong>包含</strong>未聊天日期
             </p>
           )}
+        </div>
+      </div>
+      {/* <Step phase={summaryStats.score} /> */}
+      <div className="stats w-full bg-background text-text text-center mb-10">
+        <div className="stat">
+          <div className="stat-title mb-2">訊息活躍度評估分數</div>
+          <div className="stat-value mb-2">
+            {summaryStats.score}
+            <span className="text-sm">/5</span>
+          </div>
+          <div className="stat-desc">
+            依據訊息持續性與回覆時間間隔進行簡易判斷
+          </div>
         </div>
       </div>
       <section className="legend grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 gap-4">
@@ -215,9 +269,12 @@ function Analysis() {
           </ChartContainer>
         )}
         {stickerEmojiChartState && (
-          <ChartContainer title="敷衍程度" loading={loading}>
-            <Line data={stickerEmojiChartState} />
-          </ChartContainer>
+          <div className="text-text">
+            <ChartContainer title="敷衍程度" loading={loading}>
+              <Line data={stickerEmojiChartState} />
+            </ChartContainer>
+            <p>※ 僅供參考，也是有人很認真挑選貼圖代替文字意義</p>
+          </div>
         )}
       </section>
       <section className="advanced w-full mb-10">
@@ -233,8 +290,30 @@ function Analysis() {
           </ChartContainer>
         )}
         {chatDensityChart && (
-          <ChartContainer title="對話密度" loading={loading}>
-            <Line data={chatDensityChart} />
+          <div>
+            <ChartContainer title="對話密度" loading={loading}>
+              <Line data={chatDensityChart} />
+            </ChartContainer>
+            <div className="text-text">
+              <p>
+                <span className="text-message-500">對話組數</span>
+                ：連續性對話計算單位，定義為「相同使用者，與前一筆訊息相鄰10分鐘內之集合」
+              </p>
+              <p>
+                <span className="text-call-500">對話回合數</span>
+                ：沒有長時間離開或閒置的對話計算單位，定義為「不論使用者，與前一筆訊息相鄰3小時內之集合」
+              </p>
+              <p>
+                ※ 當<span className="text-call-500">對話回合數</span>
+                明顯大於<span className="text-message-500">對話組數</span>
+                ，表示每次都只傳送少許訊息
+              </p>
+            </div>
+          </div>
+        )}
+        {contactPeriodPieChart && (
+          <ChartContainer title="訊息時段" loading={loading} center={true}>
+            <Pie data={contactPeriodPieChart} />
           </ChartContainer>
         )}
       </section>

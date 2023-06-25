@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { summaryStatsCalculator } from "../../../utils/analyzer";
 
-const initialState = {};
+const initialState: any = {};
 
 const summaryStatsSlice = createSlice({
   name: "summaryStats",
