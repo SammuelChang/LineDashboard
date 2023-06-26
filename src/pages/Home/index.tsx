@@ -13,6 +13,9 @@ function Home() {
   const handleClickSteps = () => {
     gtag("event", "steps", {});
   };
+  const handleClickSafety = () => {
+    gtag("event", "safety", {});
+  };
 
   return (
     <div className="h-fit w-screen">
@@ -37,11 +40,21 @@ function Home() {
           使用範例
         </button>
       </div>
-      <div className="flex justify-center text-text pb-5">
-        <Link to="/steps" target="_blank" className="flex items-center">
-          <LuExternalLink />
-          <span onClick={handleClickSteps}>&nbsp;如何取得聊天記錄文字檔？</span>
-        </Link>
+      <div className="text-text p-5 mx-auto justify-center flex">
+        <div className="pb-5 mr-5">
+          <Link to="/steps" target="_blank" className="flex items-center">
+            <LuExternalLink />
+            <span onClick={handleClickSteps}>
+              &nbsp;如何取得聊天記錄文字檔？
+            </span>
+          </Link>
+        </div>
+        <div className="pb-5">
+          <Link to="/safety" target="_blank" className="flex items-center">
+            <LuExternalLink />
+            <span onClick={handleClickSafety}>&nbsp;資料安全性說明</span>
+          </Link>
+        </div>
       </div>
       {/* <div className="flex flex-wrap gap-10 justify-center text-text">
         <div className="p-10 flex flex-col items-center gap-4">
