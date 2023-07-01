@@ -191,9 +191,73 @@ function Analysis() {
   return (
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
       {window.screen.width < 500 && (
-        <p className="text-text text-center">※ 手機版建議使用橫向觀看</p>
+        <p className="text-text text-sm  flex items-center justify-center md:justify-end">
+          <MdReportProblem
+            className="[&>path]:stroke-text hover:scale-110 duration-300"
+            size="1rem"
+          />
+          &nbsp;手機版建議使用橫向觀看
+        </p>
       )}
       <div>
+        {!searchParams.get("isDemo") && (
+          <div className="text-text text-sm flex items-center justify-center md:justify-end">
+            <MdReportProblem
+              className="[&>path]:stroke-text hover:scale-110 duration-300"
+              size="1rem"
+            />
+            &nbsp;資料顯示異常？
+            <span
+              className="cursor-pointer border-b-2"
+              onClick={() => {
+                setModalStatus(() => !modalStatus);
+              }}
+            >
+              點我回報
+            </span>
+          </div>
+        )}
+        <dialog
+          id="my_modal_2"
+          className={`modal ${
+            modalStatus ? "modal-open" : ""
+          } h-screen w-screen`}
+        >
+          <form
+            method="dialog"
+            className="modal-box bg-background text-text max-w-screen-sm mx-10"
+          >
+            <h3 className="font-bold text-lg">
+              為了更能調整錯誤，請將以下資訊（擷取前30行文字）複製後，
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
+                target="_blank"
+                className="underline"
+              >
+                點選此處
+              </a>
+              到Google表單回報錯誤，並提供錯誤狀況，謝謝！
+            </h3>
+            <div className="py-4 text-sm font-normal">
+              <p className="flex font-bold" onClick={copy}>
+                <span className="cursor-pointer">
+                  <BiCopy size="1.5rem" />
+                </span>
+                &nbsp; <span className="cursor-pointer">複製文字</span>
+              </p>
+              <hr className="my-3" />
+              {cropChatContent(file)}
+            </div>
+            <div
+              className="absolute top-0 right-0 p-2"
+              onClick={() => {
+                setModalStatus(false);
+              }}
+            >
+              <AiOutlineClose size="1.5rem" />
+            </div>
+          </form>
+        </dialog>
         <Banner
           title={
             content.title
@@ -204,61 +268,7 @@ function Analysis() {
           }
           type="strong"
         >
-          <div className="absolute right-0 mr-5">
-            {!searchParams.get("isDemo") && (
-              <span
-                className="text-text text-sm flex items-center cursor-pointer"
-                onClick={() => {
-                  setModalStatus(() => !modalStatus);
-                }}
-              >
-                <MdReportProblem
-                  className="[&>path]:stroke-text hover:scale-110 duration-300"
-                  size="1.5rem"
-                />
-                有狀況嗎？
-              </span>
-            )}
-            <dialog
-              id="my_modal_2"
-              className={`modal ${modalStatus ? "modal-open" : ""} p-0`}
-            >
-              <form
-                method="dialog"
-                className="modal-box bg-background text-text"
-              >
-                <h3 className="font-bold text-lg">
-                  為了更能調整錯誤，請將以下資訊（擷取前30行文字）複製後，
-                  <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
-                    target="_blank"
-                    className="underline"
-                  >
-                    點選此處
-                  </a>
-                  到Google表單回報錯誤，並提供錯誤狀況，謝謝！
-                </h3>
-                <div className="py-4 text-sm font-normal">
-                  <p className="flex font-bold" onClick={copy}>
-                    <span className="cursor-pointer">
-                      <BiCopy size="1.5rem" />
-                    </span>
-                    &nbsp; <span className="cursor-pointer">複製文字</span>
-                  </p>
-                  <hr className="my-3" />
-                  {cropChatContent(file)}
-                </div>
-                <div
-                  className="absolute top-0 right-0 p-2"
-                  onClick={() => {
-                    setModalStatus(false);
-                  }}
-                >
-                  <AiOutlineClose size="1.5rem" />
-                </div>
-              </form>
-            </dialog>
-          </div>
+          <div className="absolute right-0 mr-5"></div>
         </Banner>
       </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
