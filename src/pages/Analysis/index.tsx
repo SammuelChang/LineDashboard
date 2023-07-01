@@ -7,6 +7,9 @@ import Pie from "../../components/Recharts/Pie";
 import Legend from "../../components/Legend";
 import Record from "../../components/Record";
 import Banner from "../../components/Banner";
+import { MdReportProblem } from "react-icons/md";
+import { BiCopy } from "react-icons/bi";
+import { AiOutlineClose } from "react-icons/ai";
 
 import { parseFile } from "../../redux/slices/content";
 import {
@@ -61,6 +64,7 @@ function Analysis() {
 
   const dispatch = useAppDispatch();
 
+  const [modalStatus, setModalStatus] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [isFullChat, setIsFullChat] = useState<boolean>(false);
   const [dateRangeLists, setDateRangeLists] = useState<any>([]);
@@ -164,6 +168,26 @@ function Analysis() {
     setDateRange(newDateRange);
   };
 
+  const cropChatContent = (fileText: any) => {
+    if (typeof fileText === "string") {
+      const newFile = fileText.split("\n");
+      newFile.length = 30;
+      return newFile.toString();
+    } else {
+      return "無法擷取聊天訊息";
+    }
+  };
+
+  const copy = () => {
+    const copyText = cropChatContent(file);
+    const textarea = document.createElement("textarea");
+    textarea.value = copyText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+  };
+
   return (
     <div className="w-10/12 h-full mb-4 mx-auto py-10">
       {window.screen.width < 500 && (
@@ -180,14 +204,61 @@ function Analysis() {
           }
           type="strong"
         >
-          {/* <p className="absolute right-0 mr-5">
-            <Link to="/process/upload">
-              <GrRefresh
-                className="[&>path]:stroke-text hover:scale-110 duration-300"
-                size="1.5rem"
-              />
-            </Link>
-          </p> */}
+          <div className="absolute right-0 mr-5">
+            {!searchParams.get("isDemo") && (
+              <span
+                className="text-text text-sm flex items-center cursor-pointer"
+                onClick={() => {
+                  setModalStatus(() => !modalStatus);
+                }}
+              >
+                <MdReportProblem
+                  className="[&>path]:stroke-text hover:scale-110 duration-300"
+                  size="1.5rem"
+                />
+                有狀況嗎？
+              </span>
+            )}
+            <dialog
+              id="my_modal_2"
+              className={`modal ${modalStatus ? "modal-open" : ""} p-0`}
+            >
+              <form
+                method="dialog"
+                className="modal-box bg-background text-text"
+              >
+                <h3 className="font-bold text-lg">
+                  為了更能調整錯誤，請將以下資訊（擷取前30行文字）複製後，
+                  <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
+                    target="_blank"
+                    className="underline"
+                  >
+                    點選此處
+                  </a>
+                  到Google表單回報錯誤，並提供錯誤狀況，謝謝！
+                </h3>
+                <div className="py-4 text-sm font-normal">
+                  <p className="flex font-bold" onClick={copy}>
+                    <span className="cursor-pointer">
+                      <BiCopy size="1.5rem" />
+                    </span>
+                    &nbsp; <span className="cursor-pointer">複製文字</span>
+                  </p>
+                  <hr className="my-3" />
+                  {cropChatContent(file)}
+                </div>
+                <div
+                  className="absolute top-0 right-0 p-2"
+                  onClick={() => {
+                    setModalStatus(false);
+                  }}
+                >
+                  <AiOutlineClose size="1.5rem" />
+                </div>
+              </form>
+            </dialog>
+          </div>
         </Banner>
       </div>
       <div className="tools h-min-12 bg-light-500 dark:bg-dark-700 my-4 flex flex-wrap items-center justify-start md:justify-center rounded-lg">
