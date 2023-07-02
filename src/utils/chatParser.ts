@@ -161,7 +161,7 @@ function timeProcessor(message: string) {
 
   if (isPM) {
     hour = (+hour + 12).toString();
-    hour = hour === "24" ? "0" : hour;
+    hour = hour === "24" ? "00" : hour;
   }
   messageTime = `${hour}:${minute}`;
   return messageTime;
