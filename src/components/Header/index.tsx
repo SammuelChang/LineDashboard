@@ -1,10 +1,19 @@
+import moment from "moment";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import { HiMenu } from "react-icons/hi";
+import { MdFiberNew } from "react-icons/md";
 import { useState } from "react";
+import updateLogArray from "../../updateLog";
 
 export default function Header({ toggleTheme }: any) {
   const [isOpened, setIsOpened] = useState(false);
+  const isUpdatedRecent = () => {
+    const currentDate = moment(new Date());
+    const updateDate = moment(updateLogArray[0]["date"]);
+    const duration = moment.duration(currentDate.diff(updateDate));
+    const days = duration.asDays();
+    return days < 30;
+  };
 
   return (
     <div className="navbar bg-background">
@@ -35,9 +44,12 @@ export default function Header({ toggleTheme }: any) {
             {/* <li>
               <Link to="/analysis">開始分析</Link>
             </li> */}
-            {/* <li>
-              <a>更新紀錄</a>
-            </li> */}
+            <li>
+              <Link to="/update" className="flex gap-1">
+                {isUpdatedRecent() && <MdFiberNew />}
+                更新紀錄
+              </Link>
+            </li>
             <li>
               <Link
                 to="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"
@@ -70,9 +82,12 @@ export default function Header({ toggleTheme }: any) {
           {/* <li>
               <Link to="/analysis">開始分析</Link>
             </li> */}
-          {/* <li>
-              <a>更新紀錄</a>
-            </li> */}
+          <li>
+            <Link to="/update" className="flex gap-1">
+              {isUpdatedRecent() && <MdFiberNew />}
+              更新紀錄
+            </Link>
+          </li>
           <li>
             <Link
               to="https://docs.google.com/forms/d/e/1FAIpQLSfdhnQwZqAc9l5Fn7g4BaaevW2IQs0u7QtERfyk41llnuCV1Q/viewform"

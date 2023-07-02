@@ -124,8 +124,17 @@ function dateProcessor(message: string) {
     "^([0-9]{4})([./]{1})([0-9]{1,2})([./]{1})([0-9]{1,2})"
   );
 
-  const isDate = dateReg.test(message);
-  const date = message.substring(0, 10).replaceAll("/", "-");
+  const match = dateReg.exec(message);
+  const isDate = match !== null;
+  let date = "";
+
+  if (isDate) {
+    let year = match[1];
+    let month = ("0" + match[3]).slice(-2);
+    let day = ("0" + match[5]).slice(-2);
+    date = `${year}-${month}-${day}`;
+  }
+
   return { isDate, date };
 }
 
@@ -135,17 +144,25 @@ function dateProcessor(message: string) {
 function timeProcessor(message: string) {
   let messageTime;
   const time = message.split(/(\s+)/)[0];
-  const regex = /^(下午|上午|[AaPp][Mm])(\d{1,2}):(\d{2})$/;
-  const isTime = regex.test(time);
+  const timeRegex = /^(下午|上午|[AaPp][Mm])?(\d{1,2}):(\d{2})$/;
+  const isTime = timeRegex.test(time);
   if (!isTime) return "";
 
-  let [fullTime, AMPM, hour, minute] = time.match(regex) as RegExpMatchArray;
+  let [fullTime, AMPM, hour, minute] = time.match(
+    timeRegex
+  ) as RegExpMatchArray;
 
-  if (hour === "12") {
-    hour = "0";
-  }
+  const isAM = ["上午", "AM", "am", "Am", "aM"].includes(AMPM);
   const isPM = ["下午", "PM", "pm", "Pm", "pM"].includes(AMPM);
-  messageTime = `${isPM ? +hour + 12 : hour}:${minute}`;
+
+  if (isAM && hour === "12") {
+    hour = "00";
+  }
+
+  if (isPM) {
+    hour = (+hour + 12).toString();
+  }
+  messageTime = `${hour}:${minute}`;
   return messageTime;
 }
 
