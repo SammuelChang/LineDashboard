@@ -1,5 +1,9 @@
 const updateLogArray = [
   {
+    date: "2023-07-16",
+    content: "新增訊息比例環狀圖",
+  },
+  {
     date: "2023-07-02",
     content: "修正不同裝置日期與時間格式不同，導致無法分析的問題",
   },

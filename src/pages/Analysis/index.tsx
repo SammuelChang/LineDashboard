@@ -38,6 +38,8 @@ import { useAppSelector, useAppDispatch } from "../../hook";
 import { filterMessages, setMessages } from "../../redux/slices/stats/messages";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Step } from "../../components/Step";
+import { transformMessageRatioPieChart } from "../../redux/slices/chart/messageRatioPieChart";
+import HalfPie from "../../components/Recharts/HalfPie";
 
 function Analysis() {
   const [searchParams] = useSearchParams();
@@ -58,6 +60,9 @@ function Analysis() {
   const chatDensityChart = useAppSelector((state) => state.chatDensityChart);
   const contactPeriodPieChart = useAppSelector(
     (state) => state.contactPeriodPieChart
+  );
+  const messageRatioPieChart = useAppSelector(
+    (state) => state.messageRatioPieChart
   );
   const summaryBlocks = useAppSelector((state) => state.summaryBlocks);
   const recordBlocks = useAppSelector((state) => state.recordBlocks);
@@ -129,6 +134,7 @@ function Analysis() {
 
     dispatch(transformSummaryBlocks({ summaryStats }));
     dispatch(transformContactPeriodPieChart({ summaryStats }));
+    dispatch(transformMessageRatioPieChart({ summaryStats }));
     dispatch(transformRecordBlocks({ maxStats }));
   }, [summaryStats, maxStats]);
 
@@ -333,6 +339,11 @@ function Analysis() {
         {overallLineChart && (
           <ChartContainer title="整體趨勢" loading={loading}>
             <Line data={overallLineChart} />
+          </ChartContainer>
+        )}
+        {messageRatioPieChart && (
+          <ChartContainer title="訊息比例" loading={loading} center={true}>
+            <HalfPie data={messageRatioPieChart} />
           </ChartContainer>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

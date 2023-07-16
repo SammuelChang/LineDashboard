@@ -115,6 +115,7 @@ export function dailyStatsCalculator(
   var startDate = new Date(parseChat.minDate);
   var endDate = new Date(parseChat.maxDate);
 
+  // TODO 當日期非順向時，會少算小於起始日的資料
   for (
     let date = startDate;
     date <= endDate;
@@ -238,6 +239,16 @@ export function summaryStatsCalculator(
     periodCountByUser.push({ user, periodCount });
   });
 
+  const userMessageCount = chat.messages.reduce(function (acc, cur) {
+    const index = acc.findIndex((item: any) => item.name === cur.userName);
+    if (index !== -1) {
+      acc[index].value++;
+    } else {
+      acc.push({ name: cur.userName, value: 1 });
+    }
+    return acc;
+  }, []);
+
   return {
     dateCount: dailyStats.length,
     messageCount: sum(dailyStats, "messageCount"),
@@ -256,6 +267,7 @@ export function summaryStatsCalculator(
       +isFrequentlyRespond(chat.messages, "diffMinsFromPreMessage", 5) +
       +isFrequentlyRespond(chat.messages, "diffMinsFromPreSet", 60) +
       +isFrequentlyRespond(chat.messages, "diffMinsFromPreCollection", 1440),
+    userMessageCount,
   };
 }
 

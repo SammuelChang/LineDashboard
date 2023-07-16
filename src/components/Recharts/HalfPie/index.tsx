@@ -1,4 +1,4 @@
-import { PieChart, Pie, Tooltip } from "recharts";
+import { PieChart, Pie, Tooltip, Cell } from "recharts";
 
 export default function SimplePie({ data }: { data: any }) {
   // customeLabel參考：
@@ -46,7 +46,10 @@ export default function SimplePie({ data }: { data: any }) {
         label={renderCustomizedLabel}
         startAngle={360}
         endAngle={0}
-      />
+        paddingAngle={5}
+        innerRadius={50}
+        outerRadius={80}
+      ></Pie>
     </PieChart>
   );
 }
