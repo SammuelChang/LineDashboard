@@ -10,6 +10,7 @@ import stickerEmojiChart from "../slices/chart/stickerEmojiChart";
 import chatPowerChart from "../slices/chart/chatPowerChart";
 import mediaPowerChart from "../slices/chart/mediaPowerChart";
 import contactPeriodPieChart from "../slices/chart/contactPeriodPieChart";
+import messageRatioPieChart from "../slices/chart/messageRatioPieChart";
 import summaryBlocks from "../slices/chart/summaryBlocks";
 import recordBlocks from "../slices/chart/recordBlocks";
 import chatDensityChart from "../slices/chart/chatDensityLineChart";
@@ -30,6 +31,7 @@ const rootReducers = combineReducers({
   chatPowerChart,
   mediaPowerChart,
   contactPeriodPieChart,
+  messageRatioPieChart,
   summaryBlocks,
   recordBlocks,
   chatDensityChart,

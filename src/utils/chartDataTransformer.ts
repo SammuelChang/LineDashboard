@@ -348,7 +348,7 @@ export function stickerAndEmojiLineTransformer(
 }
 
 /**
- * 圖表資料製作：主要聯絡時段圓餅圖
+ * 圖表資料製作：訊息比例
  */
 export function contactPeriodPieTransformer(summaryStats: ISummaryStats) {
   const periodCountArr = Object.entries(summaryStats.periodCount);
@@ -357,6 +357,13 @@ export function contactPeriodPieTransformer(summaryStats: ISummaryStats) {
     value,
   }));
   return periodCountRes;
+}
+
+/**
+ * 圖表資料製作：對話比例儀表板
+ */
+export function messageRatioTransformer(summaryStats: ISummaryStats) {
+  return summaryStats.userMessageCount;
 }
 
 /**

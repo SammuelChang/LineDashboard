@@ -83,6 +83,7 @@ interface ISummaryStats {
   periodCount: {};
   periodCountByUser: [];
   score: number;
+  userMessageCount: {};
 }
 
 interface IRecordValue {
